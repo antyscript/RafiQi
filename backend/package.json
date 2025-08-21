@@ -1,0 +1,20 @@
+{
+  "name": "rafiqi_backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/antyscript/RafiQi#readme",
+  "bugs": {
+    "url": "https://github.com/antyscript/RafiQi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antyscript/RafiQi.git"
+  },
+  "license": "MIT",
+  "author": "antyscript",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
