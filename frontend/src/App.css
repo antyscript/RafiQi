@@ -1,9 +1,194 @@
-body {
-	height: 100vh;
+/*   fonts  */
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Extralight.ttf") format("truetype");
+	font-weight: 200;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Light.ttf") format("truetype");
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Regular.ttf") format("truetype");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Medium.ttf") format("truetype");
+	font-weight: 500;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Bold.ttf") format("truetype");
+	font-weight: 700;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-ExtraBold.ttf") format("truetype");
+	font-weight: 800;
+}
+@font-face {
+	font-family: "Tajawal";
+	src: url("./assets/fonts/Tajawal-Black.ttf") format("truetype");
+	font-weight: 900;
+}
+
+/* styles */
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	font-family: "Tajawal";
+	font-weight: 400;
+}
+.Rhead {
+	position: relative;
+	width: 100vw;
+	height: 45px;
+	justify-content: space-between !important;
+	padding: 0 13px;
+	margin: 0;
+}
+.Rhead div {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #222;
-	color: white;
-	font-style: 3rem;
+	gap: 7px;
+}
+.Rhead img {
+	height: 30px;
+	border-radius: 50%;
+}
+.Rhead h1 {
+	font-size: 1.5rem;
+	padding: 0;
+	margin: 0;
+	font-weight: 500;
+	position: relative;
+	top: 3.9px;
+}
+.Rhead h1 span {
+	font-size: 0.85rem;
+}
+.flex {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.links {
+	padding: 5px 0;
+	margin: 0 auto;
+}
+.links > div {
+	margin: 0 2vw;
+}
+.links div p {
+	position: relative;
+	top: 3.9px;
+}
+.active {
+	border-bottom: 3px solid #f97316;
+}
+main {
+	max-width: 750px;
+	margin: 10px 5vw 0 5vw;
+	text-align: center;
+}
+.calculate h2 {
+	margin-top: 30px;
+	font-weight: 600;
+}
+.calculate p:nth-child(4) {
+	font-size: 0.6rem;
+}
+.calculate {
+	line-height: 1.5rem;
+}
+.calculate *:not(h2) {
+	margin-top: 7px;
+}
+.calculate div {
+	width: 90%;
+	margin: 7px auto;
+}
+.calculate div button {
+	width: 45%;
+	padding: 5px;
+	margin: 5px;
+	background-color: #9ca3af;
+	border: 2px solid #a1abbb;
+	border-radius: 5px;
+	outline: none;
+	box-shadow: 0 0 10px rgb(0, 0, 0, 0.2);
+	transition: all 0.3s;
+}
+.calculate div button:hover,
+.calculate button:active {
+	background-color: #f97316;
+	box-shadow: 0 0 10px rgb(249, 115, 22, 0.1);
+	border: 2px solid #f97316;
+}
+.calculate div button:active {
+	scale: 1.1;
+}
+.SideBar {
+	height: 100vh;
+	width: 250px;
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: rgb(181, 182, 184);
+	z-index: 10;
+	transition: all 0.3s;
+}
+.ShowSide {
+	right: -250px;
+}
+.structure {
+	width: 100%;
+}
+.structure table {
+	margin: 15px auto;
+}
+.structure table tbody tr td input {
+	width: 90%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-bottom: 1px solid #000;
+	outline: none;
+	border-radius: 2px;
+	font-family: Monospace;
+	background-color: transparent;
+}
+.structure * {
+	margin-top: 15px;
+}
+.structure button {
+	background-color: rgba(249, 115, 22, 0.794);
+	padding: 5px 10px;
+	border: none;
+	outline: none;
+	border-radius: 6px;
+	direction: rtl;
+	transition: all 0.2s;
+}
+.structure button:hover {
+	scale: 1.1;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.structure button:active {
+	background-color: #f97316;
+}
+.structure th {
+	background-color: rgba(249, 115, 22, 0.794);
+	border-radius: 6px;
+	font-size: 0.8rem;
+	padding: 1px 2px;
+}
+.matier {
+	background-color: rgba(156, 163, 175, 0.502);
+	border-radius: 6px;
 }
