@@ -22,7 +22,7 @@ export default defineConfig({
 				start_url: "/",
 				icons: [
 					{
-						src: "pwa-512x512.png",
+						src: "pwa-X.png",
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "maskable"
@@ -34,7 +34,7 @@ export default defineConfig({
 						purpose: "any"
 					},
 					{
-						src: "pwa-512x512.png",
+						src: "pwa-512-x.png",
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "any"
