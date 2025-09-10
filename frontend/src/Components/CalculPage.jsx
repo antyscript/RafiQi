@@ -12,22 +12,22 @@ function CalculPage() {
 					الله
 				</p>
 				<div>
-					<Link to="/tcsf">
+					<Link to="/note/tcsf">
 						<button>TCSF</button>
 					</Link>
-					<Link to="/tcal">
+					<Link to="/note/tcal">
 						<button>TCAL</button>
 					</Link>
-					<Link to="/1bac-scexp">
+					<Link to="/note/1bac-scexp">
 						<button>1BAC-SCEXP</button>
 					</Link>
-					<Link to="/1bac-lsh">
+					<Link to="/note/1bac-lsh">
 						<button>1BAC-LSH</button>
 					</Link>
-					<Link to="/2bac-sp">
-						<button>2BAC-SP</button>
+					<Link to="/note/2bac-pc">
+						<button>2BAC-PC</button>
 					</Link>
-					<Link to="/2bac-sh">
+					<Link to="/note/2bac-sh">
 						<button>2BAC-SH</button>
 					</Link>
 				</div>

@@ -1,33 +1,17 @@
-const express = require("express");
-const app = express();
+const { User, Post } = require("../schema/Schema");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
-const PORT = process.env.PORT || 5000;
-const mongoose = require("mongoose");
-/*const { Post, User } = require("./schema/Schema");
-const bcrypt = require("bcryptjs");*/
-const routes = require("./routes/routes");
+const jwt = require("jsonwebtoken");
+//jwt
 
-app.use(express.static("public"));
-app.use(express.json());
-//  app.use(cookieParser());
-
-const cors = require("cors");
-app.use(cors({ origin: "*" }));
-
-mongoose
-	.connect(process.env.MNG_URL)
-	.then(res => app.listen(PORT, _ => console.log(`listen in port ${PORT}`)))
-	.catch(err => console.log(err));
-
-/*app.listen(PORT, _ => console.log(`listen in port ${PORT}`));*/
-app.use(routes);
-
-/*app.get("/posts", async (req, res) => {
+// posts
+module.exports.get_posts = async (req, res) => {
 	const posts = await Post.find();
 	res.json(posts);
-});
+};
 
-app.post("/login", async (req, res) => {
+//login
+module.exports.post_login = async (req, res) => {
 	const { username, password } = req.body;
 	const isExist = await User.findOne({
 		username
@@ -35,7 +19,17 @@ app.post("/login", async (req, res) => {
 	if (isExist) {
 		const isMatch = await bcrypt.compare(password, isExist.password);
 		if (isMatch) {
-			res.json({ mag: "happy login !" });
+			const token = jwt.sign(
+				{
+					id: isExist.id,
+					username: isExist.username,
+					niveau: isExist.niveau
+				},
+				process.env.SECRET_JWT,
+				{ expiresIn: "1h" }
+			);
+
+			res.json({ token, msg: "happy login !" });
 		} else {
 			res.json({
 				yourError: { password: "كلمة المرور خاطئة !" },
@@ -49,9 +43,10 @@ app.post("/login", async (req, res) => {
 		});
 	}
 	console.log(isExist);
-});
+};
 
-app.post("/signup", async (req, res) => {
+//signup
+module.exports.post_signup = async (req, res) => {
 	if (!req.body.username || !req.body.password) {
 		res.json({ msg: "no data available" });
 		return;
@@ -91,4 +86,4 @@ app.post("/signup", async (req, res) => {
 		console.log(users);
 		res.json({ msg: "regester" });
 	}
-});*/
+};
