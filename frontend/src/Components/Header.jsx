@@ -14,7 +14,7 @@ function Header({ setOpen, children }) {
 				<div>
 					<img src="/webicon.png" />
 					<h1>
-						Rafiqi <span>v2.0.0</span>
+						Rafiqi <span>v2.0.1</span>
 					</h1>
 				</div>
 				<MenuIcon
