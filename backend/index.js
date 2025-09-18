@@ -3,92 +3,38 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const mongoose = require("mongoose");
-/*const { Post, User } = require("./schema/Schema");
-const bcrypt = require("bcryptjs");*/
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const isProduction = process.env.NODE_ENV === "production";
+
 const routes = require("./routes/routes");
 
-app.use(express.static("public"));
+// إعداد CORS
+const corsOptions = {
+	origin: isProduction
+		? "https://rafiqi.vercel.app"
+		: "http://localhost:5173",
+	credentials: true
+};
+app.use(cors(corsOptions));
+
+// تحليل JSON والكوكيز
 app.use(express.json());
-//  app.use(cookieParser());
+app.use(cookieParser());
 
-const cors = require("cors");
-app.use(cors({ origin: "*" }));
+// static files
+app.use(express.static("public"));
 
-mongoose
-	.connect(process.env.MNG_URL)
-	.then(res => app.listen(PORT, _ => console.log(`listen in port ${PORT}`)))
-	.catch(err => console.log(err));
-
-/*app.listen(PORT, _ => console.log(`listen in port ${PORT}`));*/
+// routes
 app.use(routes);
 
-/*app.get("/posts", async (req, res) => {
-	const posts = await Post.find();
-	res.json(posts);
-});
-
-app.post("/login", async (req, res) => {
-	const { username, password } = req.body;
-	const isExist = await User.findOne({
-		username
-	});
-	if (isExist) {
-		const isMatch = await bcrypt.compare(password, isExist.password);
-		if (isMatch) {
-			res.json({ mag: "happy login !" });
-		} else {
-			res.json({
-				yourError: { password: "كلمة المرور خاطئة !" },
-				msg: "password is incorrect"
-			});
-		}
-	} else {
-		res.json({
-			yourError: { username: "اسم المستخدم غير موجود" },
-			msg: "this username is dosn't exist"
-		});
-	}
-	console.log(isExist);
-});
-
-app.post("/signup", async (req, res) => {
-	if (!req.body.username || !req.body.password) {
-		res.json({ msg: "no data available" });
-		return;
-	}
-	await User.findOneAndDelete({ username: "ali" });
-	const isExistUser = await User.findOne({ username: req.body.username });
-	console.log(isExistUser);
-	console.log("$$$$$$$$$");
-	const usersa = await User.find();
-	console.log(usersa);
-	console.log("$$$$$$$$$");
-	if (isExistUser) {
-		console.log("is there");
-		res.json({
-			yourError: { username: "هذا الإسم مستخدم بالفعل، جرب اخر" },
-			msg: "this username alerdy taken"
-		});
-		return;
-	} else {
-		console.log("dost exist");
-
-		const { username, password, gender, niveau } = req.body;
-
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
-
-		const newUser = new User({
-			username,
-			password: hashedPassword,
-			gender,
-			niveau
-		});
-
-		await newUser.save();
-
-		const users = await User.find();
-		console.log(users);
-		res.json({ msg: "regester" });
-	}
-});*/
+// الاتصال بقاعدة البيانات وتشغيل السيرفر
+mongoose
+	.connect(process.env.MNG_URL)
+	.then(() =>
+		app.listen(PORT, () => {
+			console.log(`Server listening on port ${PORT}`);
+			console.log("NODE_ENV =", process.env.NODE_ENV);
+		})
+	)
+	.catch(err => console.log(err));

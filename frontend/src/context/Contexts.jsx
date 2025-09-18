@@ -1,42 +1,34 @@
-
 import { createContext, useState, useContext, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ nameuser: "ضيف" });
-  
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUser({ nameuser: decoded.username });
-      } catch (err) {
-        console.error("خطأ في التوكن", err);
-        setUser({ nameuser: "ضيف" });
-      }
-    } else {
-      setUser({ nameuser: "ضيف" });
-    }
-  }, []); 
+	const [user, setUser] = useState({ nameuser: "ضيف" });
 
-  const login = (userData, token) => {
-    localStorage.setItem("token", token); 
-    setUser(userData);
-  };
+	useEffect(() => {
+		const simpleInfo = localStorage.getItem("simpleInfo");
+		if (simpleInfo) {
+			// حول string إلى object
+			setUser(JSON.parse(simpleInfo));
+		}
+	}, []);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser({ nameuser: "ضيف" });
-  };
+	const login = userData => {
+		localStorage.setItem("simpleInfo", JSON.stringify(userData));
+		setUser(userData);
+	};
 
-  return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
+	const logout = () => {
+		localStorage.removeItem("simpleInfo");
+		setUser({ nameuser: "ضيف" });
+	};
+
+	return (
+		<UserContext.Provider value={{ user, login, logout }}>
+			{children}
+		</UserContext.Provider>
+	);
 };
 
+export const backWebSite = "https://rafiqi.onrender.com";
 export const useUser = () => useContext(UserContext);

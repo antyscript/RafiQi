@@ -8,7 +8,9 @@ export default defineConfig({
 		VitePWA({
 			registerType: "autoUpdate",
 			workbox: {
-				globPatterns: ["**/*.{js,css,html,ico,png,svg,ttf,woff,woff2}"]
+				globPatterns: [
+					"**/*.{js,css,html,ico,png,jpg,svg,ttf,woff,woff2}"
+				]
 			},
 			includeAssets: [
 				"favicon.ico",
@@ -45,5 +47,8 @@ export default defineConfig({
 				]
 			}
 		})
-	]
+	],
+	server: {
+		historyApiFallback: true
+	}
 });

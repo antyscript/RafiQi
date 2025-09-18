@@ -1,10 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import {
-	
-	Alert
-} from "@mui/material";
+import { Alert } from "@mui/material";
 // Structure
 
 function Structure({ children }) {
@@ -114,20 +111,38 @@ function Trs({ matier, ceof, updateRow }) {
 	);
 }
 
-function TrsM({ matier }) {
+function TrM({ matier, ceof, updateRow }) {
+	const coef = Number(ceof);
+	const [values, setValues] = useState([""]);
+
+	function handleChange(e) {
+		const newVals = [...values];
+		newVals[0] = e.target.value;
+		setValues(newVals);
+
+		const nums = newVals
+			.map(v => (v === "" ? null : Number(v)))
+			.filter(v => v !== null && !isNaN(v));
+
+		let avg = null;
+		if (nums.length > 0) {
+			avg = nums.reduce((a, b) => a + b, 0) / nums.length;
+		}
+
+		updateRow(matier, coef, avg);
+	}
+
 	return (
-		<>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>
-					<input type="number" min="0" max="20" />
-				</td>
-				<td className="matier">{matier}</td>
-			</tr>
-		</>
+		<tr>
+			<td colspan="5">
+				<input
+					type="number"
+					value={values[0]}
+					onChange={e => handleChange(e)}
+				/>
+			</td>
+			<td className="matier">{matier}</td>
+		</tr>
 	);
 }
 
@@ -232,6 +247,7 @@ function TCSF() {
 				<Trs ceof="2" matier="الفلسفة" />
 				<Trs ceof="2" matier="معلوميات" />
 				<Trs ceof="2" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={anneLevel} title="الدورة" />
 		</>
@@ -259,6 +275,7 @@ function TCAL() {
 				<Trs ceof="1" matier="الإجتماعيات" />
 				<Trs ceof="1" matier="إسلاميات" />
 				<Trs ceof="1" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={anneLevel} title="الدورة" />
 		</>
@@ -292,6 +309,7 @@ function ABAC_SCEXP() {
 				<Trs ceof="2" matier="إسلاميات" />
 				<Trs ceof="2" matier="الفسلفة" />
 				<Trs ceof="1" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={subjects} H4="المعدل الجهوي" title="المادة" />
 			<Sndala999 anneLevel={anneLevel} title="المرحلة" />
@@ -325,6 +343,7 @@ function ABAC_LSH() {
 				<Trs ceof="1" matier="الرياضيات" />
 				<Trs ceof="1" matier="العلوم" />
 				<Trs ceof="1" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={subjects} H4="المعدل الجهوي" title="المادة" />
 			<Sndala999 anneLevel={anneLevel} title="المرحلة" />
@@ -362,6 +381,7 @@ function BBAC_PC() {
 				<Trs ceof="1" matier="الإجتماعيات" />
 				<Trs ceof="1" matier="إسلاميات" />
 				<Trs ceof="1" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={subjects} H4="المعدل الوطني" title="المادة" />
 			<Sndala999 anneLevel={anneLevel} title="المرحلة" />
@@ -395,6 +415,7 @@ function BBAC_SH() {
 				<Trs ceof="1" matier="العلوم" />
 				<Trs ceof="1" matier="إسلاميات" />
 				<Trs ceof="1" matier="الرياضة" />
+				<TrM ceof="1" matier="المواظبة" />
 			</Structure>
 			<Sndala999 anneLevel={subjects} H4="المعدل الوطني" title="المادة" />
 			<Sndala999 anneLevel={anneLevel} title="المرحلة" />
@@ -402,9 +423,9 @@ function BBAC_SH() {
 	);
 }
 
-function IsToken({ children }) {
-	const token = localStorage.getItem("token");
-	if (token) {
+function IsSI({ children }) {
+	const SI = localStorage.getItem("simpleInfo");
+	if (!SI) {
 		console.log(JSON.stringify(localStorage));
 		return (
 			<div>
@@ -424,4 +445,4 @@ function IsToken({ children }) {
 	}
 }
 
-export { TCSF, TCAL, ABAC_LSH, ABAC_SCEXP, BBAC_SH, BBAC_PC, IsToken };
+export { TCSF, TCAL, ABAC_LSH, ABAC_SCEXP, BBAC_SH, BBAC_PC, IsSI };

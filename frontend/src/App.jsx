@@ -8,6 +8,7 @@ import CalculPage from "./Components/CalculPage.jsx";
 import PostPage from "./Components/PostPage.jsx";
 import Header from "./Components/Header.jsx";
 import Information from "./Components/info.jsx";
+import Profiles from "./Components/Profiles.jsx";
 import {
 	TCSF,
 	TCAL,
@@ -15,7 +16,7 @@ import {
 	ABAC_SCEXP,
 	BBAC_SH,
 	BBAC_PC,
-	IsToken
+	IsSI
 } from "./Components/Level.jsx";
 import Signup from "./Components/signup.jsx";
 import Login from "./Components/login.jsx";
@@ -65,9 +66,9 @@ function App() {
 								<Cont />
 							</Home>
 							<main>
-								<IsToken>
+								<IsSI>
 									<PostPage />
-								</IsToken>
+								</IsSI>
 							</main>
 						</>
 					}
@@ -101,6 +102,17 @@ function App() {
 							<Home />
 							<main>
 								<Information />
+							</main>
+						</>
+					}
+				/>
+				<Route
+					path="/profile/:user"
+					element={
+						<>
+							<Home />
+							<main>
+								<Profiles />
 							</main>
 						</>
 					}

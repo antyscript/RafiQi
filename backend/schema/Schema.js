@@ -6,7 +6,6 @@ const PostSchema = new Schema(
 	{
 		authour: String,
 		description: String,
-		tags: [String]
 	},
 	{ timestamps: true }
 );

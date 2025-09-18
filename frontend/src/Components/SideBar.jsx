@@ -6,8 +6,11 @@ import { useContext } from "react";
 import { useUser } from "../context/Contexts.jsx";
 
 function SideBar({ setOpen, open }) {
+	useEffect(_ => {
+		alert("thsi is cookie : " + document.cookie);
+	}, []);
 	const { user, logout } = useUser();
-	console.log(JSON.stringify(user));
+	console.log(user.nameuser);
 	let location = useLocation();
 	useEffect(() => {
 		setOpen(false);

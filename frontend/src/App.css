@@ -170,6 +170,7 @@ main {
 	border-radius: 2px;
 	font-family: Monospace;
 	background-color: transparent;
+	text-align: center;
 }
 .structure * {
 	margin-top: 15px;
@@ -283,9 +284,10 @@ main {
 	padding: 7px 14px;
 	border: none;
 	border-radius: 8px;
-	background-color: rgb(247, 148, 79);
+	background-color: rgb(250, 127, 41) ;
 	transition: all 0.2s;
 	margin: 10px 0;
+	color: #fff !important;
 }
 .submit:hover {
 	background-color: #f97316;

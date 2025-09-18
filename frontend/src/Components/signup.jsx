@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/Contexts.jsx";
+import { useUser , backWebSite} from "../context/Contexts.jsx";
 import { Visibility, VisibilityOff, AccountCircle } from "@mui/icons-material";
 import {
 	IconButton,
@@ -13,7 +13,8 @@ import {
 	Box,
 	TextField,
 	MenuItem,
-	Alert
+	Alert,
+	Button
 } from "@mui/material";
 
 // import Alert from "@mui/material/Alert";
@@ -40,11 +41,11 @@ export default function Signup() {
 		passwordError: ""
 	});
 	//button disabled
-	let btnState = false;
+	const [loading, setLoading] = React.useState(false);
+
 	// send data
 
 	function sendMyData(e) {
-		btnState = true;
 		console.log("clikced");
 		let data = {
 			username: name,
@@ -57,8 +58,8 @@ export default function Signup() {
 		let hasError = check(data, errors, setError);
 		if (!hasError) {
 			console.log("doonee");
-
-			fetch("http://localhost:5000/signup", {
+			setLoading(true);
+			fetch(`${backWebSite}/signup`, {
 				method: "POST",
 				headers: { "Content-type": "application/json" },
 				body: JSON.stringify(data)
@@ -67,31 +68,37 @@ export default function Signup() {
 				.then(resData => {
 					console.log("****************************");
 					console.log("resdata : " + JSON.stringify(resData));
+					setLoading(false);
 					if (resData.yourError?.username) {
-						btnState = true;
 						setError(prev => ({
 							...prev,
 							usernameError: resData.yourError.username
 						}));
 					} else {
 						setAlert(true);
-						login({ nameuser: data.username }, token);
+						login({ nameuser: data.username });
 						setTimeout(_ => {
 							navigate("/");
 							setAlert(false);
-							btnState = false;
 						}, 3000);
 					}
 					console.log(resData.msg);
 				})
-				.catch(err => console.log(err));
+				.catch(err => {
+					setLoading(false);
+					console.log("this is an error : " + err);
+					setError(prev => ({
+						...prev,
+						usernameError: "حدث خطأ، تحقق من الاتصال"
+					}));
+				});
 		} else {
 			return;
 		}
 	}
 	// options
 
-	const currencies = [
+	const genders = [
 		{
 			value: "male",
 			label: "انا ذكر"
@@ -273,7 +280,7 @@ export default function Signup() {
 							setGender(e.target.value);
 						}}
 					>
-						{currencies.map(option => (
+						{genders.map(option => (
 							<MenuItem key={option.value} value={option.value}>
 								{option.label}
 							</MenuItem>
@@ -308,13 +315,21 @@ export default function Signup() {
 					</TextField>
 				</Box>
 				{/* final */}
-				<button
-					className="submit"
-					onClick={e => sendMyData(e)}
-					disabled={btnState}
-				>
-					إنشاء حساب
-				</button>
+				<Box sx={{ "& > button": { m: 1 } }}>
+					<Button
+						sx={{ backgroundColor: "rgb(251,144,68)" }}
+						className="submit"
+						/*	color="primary"*/
+						onClick={e => sendMyData(e)}
+						loading={loading}
+						loadingPosition="start"
+						/*	startIcon={<SaveIcon />}*/
+						variant="contained"
+						disabled={loading}
+					>
+						إنشاء حساب
+					</Button>
+				</Box>
 				<div>
 					<span>هل لديك حساب ؟</span> |
 					<Link to="/login">

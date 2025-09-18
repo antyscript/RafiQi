@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useUser } from "../context/Contexts.jsx";
+import { useUser, backWebSite } from "../context/Contexts.jsx";
 import { Visibility, VisibilityOff, AccountCircle } from "@mui/icons-material";
 import {
 	IconButton,
@@ -14,7 +14,8 @@ import {
 	Box,
 	TextField,
 	MenuItem,
-	Alert
+	Alert,
+	Button
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -62,7 +63,8 @@ export default function Login() {
 	}
 
 	//button disabled
-	let btnState = false;
+	const [loading, setLoading] = React.useState(false);
+
 	// send data
 
 	function sendMyData(e) {
@@ -76,8 +78,8 @@ export default function Login() {
 		let hasError = check(data, errors, setError);
 		if (!hasError) {
 			console.log("doonee");
-
-			fetch("http://localhost:5000/login", {
+			setLoading(true);
+			fetch(`${backWebSite}/login`, {
 				method: "POST",
 				headers: { "Content-type": "application/json" },
 				body: JSON.stringify(data)
@@ -85,7 +87,8 @@ export default function Login() {
 				.then(res => res.json())
 				.then(resData => {
 					console.log("****************************");
-					console.log("resdata : " + JSON.stringify(resData));
+					console.log("resdata : " + resData);
+					setLoading(false);
 					if (resData.yourError?.username) {
 						setError(prev => ({
 							...prev,
@@ -97,7 +100,7 @@ export default function Login() {
 							passwordError: resData.yourError.password
 						}));
 					} else {
-						login({ nameuser: data.username }, token);
+						login({ nameuser: data.username });
 						setAlert(true);
 						setTimeout(_ => {
 							navigate("/");
@@ -105,10 +108,15 @@ export default function Login() {
 						}, 3000);
 					}
 					console.log(resData.msg);
-					localStorage.setItem("token", resData.token);
-					console.log(resData.token);
 				})
-				.catch(err => console.log(err));
+				.catch(err => {
+					console.log(err);
+					setLoading(false);
+					setError(prev => ({
+						...prev,
+						usernameError: "حدث خطأ، تحقق من الاتصال"
+					}));
+				});
 		} else {
 			console.log("else fimL");
 			return;
@@ -127,7 +135,7 @@ export default function Login() {
 					icon={<CheckIcon fontSize="inherit" />}
 					severity="success"
 				>
-					تم إنشاء الحساب بنجاح
+					تم التسجيل بنجاح
 				</Alert>
 			) : (
 				""
@@ -234,9 +242,21 @@ export default function Login() {
 				</FormControl>
 
 				{/* final */}
-				<button className="submit" onClick={e => sendMyData(e)}>
-					تسجيل
-				</button>
+				<Box sx={{ "& > button": { m: 1 } }}>
+					<Button
+						sx={{ backgroundColor: "rgb(251,144,68)" }}
+						className="submit"
+						/*	color="primary"*/
+						onClick={e => sendMyData(e)}
+						loading={loading}
+						loadingPosition="start"
+						/*	startIcon={<SaveIcon />}*/
+						variant="contained"
+						disabled={loading}
+					>
+						تسجيل
+					</Button>
+				</Box>
 				<div>
 					<span>ليس لديك حساب ؟</span> |
 					<Link to="/signup">
