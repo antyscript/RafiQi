@@ -4,7 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { Alert } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { backWebSite } from "../context/Contexts.js";
+import { backWebSite } from "../context/Contexts";
 /*import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import SaveIcon from "@mui/icons-material/Save";
