@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
 	const logout = () => {
 		localStorage.removeItem("token");
 		setUser({ username: "ضيف" });
-	setTimeout(_ => window.location.reload(), 1500)
+		setTimeout(_ => window.location.reload(), 1500);
 	};
 
 	return (
@@ -43,5 +43,5 @@ export const UserProvider = ({ children }) => {
 	);
 };
 
-export const backWebSite = "http://localhost:5000"; // "https://rafiqi.onrender.com";
+export const backWebSite =/* "http://localhost:5000"*/ "https://rafiqi.onrender.com";
 export const useUser = () => useContext(UserContext);
