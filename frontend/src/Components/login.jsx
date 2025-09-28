@@ -69,15 +69,13 @@ export default function Login() {
 
 	function sendMyData(e) {
 		Stop(e);
-		console.log("clikced");
 		let data = {
 			username: name,
 			password: pass
 		};
-		console.log(`generate data, that is : ${JSON.stringify(data)}`);
 		let hasError = check(data, errors, setError);
 		if (!hasError) {
-			console.log("doonee");
+			console.log("يتم ارسال طلب التسجيل");
 			setLoading(true);
 			fetch(`${backWebSite}/login`, {
 				method: "POST",
@@ -86,8 +84,7 @@ export default function Login() {
 			})
 				.then(res => res.json())
 				.then(resData => {
-					console.log("****************************");
-					console.log("resdata : " + resData);
+					console.log(resData.msg);
 					setLoading(false);
 					if (resData.yourError?.username) {
 						setError(prev => ({
@@ -100,12 +97,12 @@ export default function Login() {
 							passwordError: resData.yourError.password
 						}));
 					} else {
-						login({ nameuser: data.username });
+						login(resData.token);
 						setAlert(true);
 						setTimeout(_ => {
 							navigate("/");
 							setAlert(false);
-						}, 3000);
+						}, 1450);
 					}
 					console.log(resData.msg);
 				})
@@ -117,9 +114,6 @@ export default function Login() {
 						usernameError: "حدث خطأ، تحقق من الاتصال"
 					}));
 				});
-		} else {
-			console.log("else fimL");
-			return;
 		}
 	}
 

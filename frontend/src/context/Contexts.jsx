@@ -1,26 +1,39 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-	const [user, setUser] = useState({ nameuser: "ضيف" });
-
+	const [user, setUser] = useState({ username: "ضيف" });
 	useEffect(() => {
-		const simpleInfo = localStorage.getItem("simpleInfo");
-		if (simpleInfo) {
-			// حول string إلى object
-			setUser(JSON.parse(simpleInfo));
+		const token = localStorage.getItem("token");
+		if (token) {
+			try {
+				const payload = jwtDecode(token);
+				setUser(payload);
+			} catch {
+				console.log("توكن غير صالح !");
+				logout();
+			}
 		}
 	}, []);
 
-	const login = userData => {
-		localStorage.setItem("simpleInfo", JSON.stringify(userData));
-		setUser(userData);
+	const login = token => {
+		logout();
+		localStorage.setItem("token", token);
+		try {
+			const payload = jwtDecode(token);
+			setUser(payload);
+		} catch {
+			console.log("توكن غير صالح !");
+			logout();
+		}
 	};
 
 	const logout = () => {
-		localStorage.removeItem("simpleInfo");
-		setUser({ nameuser: "ضيف" });
+		localStorage.removeItem("token");
+		setUser({ username: "ضيف" });
+	setTimeout(_ => window.location.reload(), 1500)
 	};
 
 	return (
@@ -30,5 +43,5 @@ export const UserProvider = ({ children }) => {
 	);
 };
 
-export const backWebSite = "https://rafiqi.onrender.com";
+export const backWebSite = "http://localhost:5000"; // "https://rafiqi.onrender.com";
 export const useUser = () => useContext(UserContext);

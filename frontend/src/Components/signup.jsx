@@ -46,18 +46,16 @@ export default function Signup() {
 	// send data
 
 	function sendMyData(e) {
-		console.log("clikced");
 		let data = {
 			username: name,
 			password: pass,
 			gender: gen,
 			niveau: niv
 		};
-		console.log(`generate data, that is : ${JSON.stringify(data)}`);
 		e.preventDefault();
 		let hasError = check(data, errors, setError);
 		if (!hasError) {
-			console.log("doonee");
+			console.log("يتم ارسال طلب التسجيل");
 			setLoading(true);
 			fetch(`${backWebSite}/signup`, {
 				method: "POST",
@@ -66,8 +64,7 @@ export default function Signup() {
 			})
 				.then(res => res.json())
 				.then(resData => {
-					console.log("****************************");
-					console.log("resdata : " + JSON.stringify(resData));
+					console.log(resData.msg);
 					setLoading(false);
 					if (resData.yourError?.username) {
 						setError(prev => ({
@@ -76,11 +73,11 @@ export default function Signup() {
 						}));
 					} else {
 						setAlert(true);
-						login({ nameuser: data.username });
+						login(resData.token);
 						setTimeout(_ => {
 							navigate("/");
 							setAlert(false);
-						}, 3000);
+						}, 1450);
 					}
 					console.log(resData.msg);
 				})

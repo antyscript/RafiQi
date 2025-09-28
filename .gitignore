@@ -11,7 +11,10 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # my notes ?:::
 Note.text
-
+# cert ?
+cert
+# my repl !
+repl.js
 # Runtime data
 pids
 *.pid

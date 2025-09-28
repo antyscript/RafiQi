@@ -1,39 +1,22 @@
 // middlewares/auth.js
 const jwt = require("jsonwebtoken");
 
-function authMiddleware(req, res, next) {
-	const infos = {
-		body: req.body,
-		method: req.method,
-		url: req.url,
-		headers: req.headers,
-		query: req.query
-	};
-	console.log(
-		"the api is pass from here : authMiddleware first line this is req : \n" +
-			JSON.stringify(infos)
-			+ "\n and this is headers.cookie = " + req.headers.cookie
-	);
-	const token = req.cookies.token;
-	console.log("this is re.cookies : " + JSON.stringify(req.cookies));
-	console.log(
-		"the api is pass from here : tokenize, and thisis the token : " + token
-	);
-	if (!token) {
-		return res.status(401).json({ pMsg: "غير مسجل الدخول !" });
-	}
+function verifyToken(req, res, next) {
+	const authHeader = req.headers.authorization;
+	if (!authHeader) return res.status(401).send("Unauthorized");
 
+	const token = authHeader.split(" ")[1];
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_JWT);
-		req.user = decoded;
+		const user = jwt.verify(token, process.env.SECRET_JWT);
+		req.user = user;
 		console.log(
-			"the api is pass from here : decode the token, and this is formations : " +
-				decode
+			`this is user: \n${user} \n and this js token: \n ${token}`
 		);
 		next();
 	} catch (err) {
-		return res.status(401).json({ pMsg: "توكن غير صالح او تم التلاعب به" });
+		res.status(403).json({
+			msg: "توكن غير صالح او تم التلاعب به !"
+		});
 	}
 }
-
-module.exports = authMiddleware;
+module.exports = verifyToken;

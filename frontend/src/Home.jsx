@@ -20,6 +20,8 @@ export function Home({ children }) {
 						setOpen
 					})
 				)}
+	
+
 				<SideBar open={open} setOpen={setOpen} />
 			</Header>
 		</>

@@ -9,6 +9,11 @@ import { backWebSite } from "../context/Contexts";
 import Switch from "@mui/material/Switch";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";*/
+import moment from "moment";
+import "moment/dist/locale/ar";
+//moment.updateLocale("ar", null);
+moment.locale("ar");
+const token = localStorage.getItem("token");
 
 import {
 	Avatar,
@@ -22,27 +27,20 @@ import {
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { io } from "socket.io-client";
+const socket = io(backWebSite);
+
 function PostPage() {
 	const [posts, setPosts] = useState([]);
-
 	useEffect(() => {
-		fetch(`${backWebSite}/posts`, {
-			credentials: "include"
-		})
+		fetch(`${backWebSite}/posts`)
 			.then(res => {
 				if (!res.ok) {
 					throw new Error(`HTTP error: ${res.status}`);
 				}
-				const status = res.status;
-				return res.json().then(data => ({ status, data }));
+				return res.json();
 			})
-			.then(({ status, data }) => {
-				alert(
-					"res status: " +
-						status +
-						" /// res : " +
-						JSON.stringify(data)
-				);
+			.then(data => {
 				if (Array.isArray(data)) {
 					setPosts(data);
 				} else {
@@ -61,15 +59,17 @@ function PostPage() {
 	}
 	return (
 		<>
-			<CreatePost />
 			{posts && posts.length > 0 ? (
 				<>
+					<CreatePost />
 					{posts.map(post => (
 						<Post
-							key={post.id}
-							date={post.createdAt}
-							name={post.author}
-							content={post.content}
+							key={post._id}
+							date={moment(post.createdAt).fromNow()}
+							name={post.authour}
+							content={post.description}
+							id={post._id}
+							likes={post.whoLiked.length}
 						/>
 					))}
 				</>
@@ -90,89 +90,6 @@ function PostPage() {
 	);
 }
 
-const Post = ({ avatar = "/default.jpg", name, date, content }) => {
-	const [like, setLike] = useState(false);
-	const styles = {
-		post: {
-			backgroundColor: "#fff",
-			borderRadius: "12px",
-			padding: "16px",
-			margin: "12px 0",
-			boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-			maxWidth: "500px"
-		},
-		postHeader: {
-			display: "flex",
-			alignItems: "center",
-			marginBottom: "12px"
-		},
-		avatar: {
-			width: "30px",
-			height: "30px",
-			borderRadius: "50%",
-			objectFit: "cover",
-			marginRight: "12px"
-		},
-		postInfo: {
-			display: "flex",
-			flexDirection: "column"
-		},
-		name: {
-			margin: 0,
-			fontSize: "16px",
-			fontWeight: "bold"
-		},
-		date: {
-			fontSize: "12px",
-			color: "gray"
-		},
-		postContent: {
-			fontSize: "14px",
-			marginBottom: "12px"
-		},
-		postActions: {
-			display: "flex",
-			gap: "8px"
-		},
-		button: {
-			backgroundColor: "#f0f0f0",
-			border: "none",
-			padding: "4px 5px 0px 5px",
-			borderRadius: "6px",
-			cursor: "pointer",
-			fontSize: "12px",
-			transition: "background-color 0.2s"
-		}
-	};
-
-	return (
-		<div style={styles.post}>
-			<div style={styles.postHeader}>
-				<img style={styles.avatar} src={avatar} />
-				<div style={styles.postInfo}>
-					<h4 style={styles.name}>{name}</h4>
-					<span style={styles.date}>{date}</span>
-				</div>
-			</div>
-			<div style={styles.postContent}>
-				<p>{content}</p>
-			</div>
-			<div style={styles.postActions}>
-				<button
-					style={styles.button}
-					onClick={() => setLike(like => !like)}
-				>
-					{like ? (
-						<StarIcon style={{ color: "#f97316" }} />
-					) : (
-						<StarBorderIcon />
-					)}
-				</button>
-			</div>
-		</div>
-	);
-};
-
 function CreatePost() {
 	const [content, setContent] = useState("");
 	const [msgs, setMsg] = useState("");
@@ -183,18 +100,21 @@ function CreatePost() {
 			setMsg("المنشور قصير جدا !");
 			return;
 		}
+
 		fetch(`${backWebSite}/posts`, {
-			credentials: "include",
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + token
+			},
 			body: JSON.stringify({ content })
 		})
 			.then(res => res.json())
 			.then(data => {
-				console.log("hello999999 " + data);
+				console.log("hello999999 " + JSON.stringify(data));
 				if (data.pMsg && data.status === 200) {
 					setMsg(data.pMsg);
-					setTimeout(_ => setMsg(""), 2000);
+					setTimeout(_ => setMsg(""), 1000);
 				} else if (data.pMsg) {
 					setMsg(data.pMsg);
 				} else {
@@ -252,4 +172,88 @@ function CreatePost() {
 	);
 }
 
+const Post = ({
+	avatar = "/default.jpg",
+	name,
+	date,
+	content,
+	id,
+	likes = 0
+}) => {
+	const [like, setLike] = useState(false);
+	const [PostLikes, setPostLikes] = useState(likes);
+	/*	async function likeAPost(id) {
+		setLike(!like);
+		SetPostLikes(prev => (like ? prev - 1 : prev + 1));
+
+		try {
+			await fetch(`${backWebSite}/posts/${id}/like`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token
+				}
+			});
+		} catch (err) {
+			// لو حصل خطأ، ارجع الحالة
+			setLike(like);
+			SetPostLikes(prev => (like ? prev + 1 : prev - 1));
+			console.error(err);
+		}
+	}
+	*/
+	useEffect(() => {
+		socket.on("likesUpdate", data => {
+			if (data.postId === id) {
+				setPostLikes(data.likes);
+			}
+		});
+		return () => socket.off("likesUpdate");
+	}, [id]);
+
+	async function likeAPost(postId) {
+		setLike(!like);
+		setPostLikes(prev => (like ? prev - 1 : prev + 1));
+
+		try {
+			await fetch(`${backWebSite}/posts/${postId}/like`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token
+				}
+			});
+		} catch (err) {
+			setLike(like);
+			setPostLikes(prev => (like ? prev + 1 : prev - 1));
+			console.error(err);
+		}
+	}
+	return (
+		<div className="post-container">
+			<div className="post-header">
+				<img className="post-avatar" src={avatar} alt="avatar" />
+				<div className="post-info">
+					<h4 className="post-name">{name}</h4>
+					<span className="post-date">{date}</span>
+				</div>
+			</div>
+
+			<div className="post-content">
+				<p>{content}</p>
+			</div>
+
+			<div className="post-actions">
+				<button className="post-button" onClick={() => likeAPost(id)}>
+					{like ? (
+						<StarIcon style={{ color: "#f97316" }} />
+					) : (
+						<StarBorderIcon />
+					)}
+				</button>
+				<span>{PostLikes}</span>
+			</div>
+		</div>
+	);
+};
 export default PostPage;

@@ -424,9 +424,8 @@ function BBAC_SH() {
 }
 
 function IsSI({ children }) {
-	const SI = localStorage.getItem("simpleInfo");
+	const SI = localStorage.getItem("token");
 	if (!SI) {
-		console.log(JSON.stringify(localStorage));
 		return (
 			<div>
 				يبدوا انك لم تسجل الدخول، سجل من هنا اولا:{" "}
