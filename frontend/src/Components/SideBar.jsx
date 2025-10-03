@@ -55,6 +55,23 @@ function SideBar({ setOpen, open }) {
 				</li>
 				<li>
 					<button
+						style={{ direction: "rtl" }}
+						onClick={_ => {
+							navigator.clipboard
+								.writeText("https://rafiqi.vercel.app")
+								.then(() => {
+									setTimeout(_ => setOpen(false), 500);
+								})
+								.catch(err => {
+									alert("حدث خطأ عند النسخ: ", err);
+								});
+						}}
+					>
+						نسخ الرابط ❦
+					</button>
+				</li>
+				<li>
+					<button
 						onClick={_ => {
 							confirm("متأكد ؟") ? logout() : null;
 							setTimeout(_ => setOpen(false), 500);

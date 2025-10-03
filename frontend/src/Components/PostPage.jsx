@@ -74,17 +74,28 @@ function PostPage() {
 					))}
 				</>
 			) : (
-				<div
-					style={{
-						marginTop: "100px",
-						display: "flex",
-						justifyContent: "center"
-					}}
-				>
-					<Stack sx={{ color: "#f97316" }} direction="row">
-						<CircularProgress />
-					</Stack>
-				</div>
+				<>
+					<div
+						style={{
+							marginTop: "100px",
+							display: "flex",
+							justifyContent: "center"
+						}}
+					>
+						<Stack sx={{ color: "#f97316" }} direction="row">
+							<CircularProgress />
+						</Stack>
+					</div>
+					<p
+						style={{
+							fontSize: "0.7rem",
+							marginTop: "36px"
+						}}
+					>
+						إذا تأخر الرد لاكثر من دقيقة المرجوا مراجعة إتصالك
+						بالانترنت او انه حدث خطأ في السيرفر
+					</p>
+				</>
 			)}
 		</>
 	);

@@ -226,6 +226,52 @@ function Sndala999({ anneLevel, title, H4 = "المعدل العام" }) {
 	);
 }
 
+function TAS3A() {
+	let subjecto = [
+		{ subject: "فرنسية", coef: 1 },
+		{ subject: "رياضيات", coef: 1 },
+		{ subject: "عربية", coef: 1 },
+		{ subject: "فيزياء", coef: 1 },
+		{ subject: "العلوم", coef: 1 },
+		{ subject: "إسلاميات", coef: 1 },
+		{ subject: "اجتماعيات", coef: 1 },
+		{ subject: "الرياضة", coef: 1 },
+		{ subject: "تكنولوجيا", coef: 1 },
+		{ subject: "الإنجليزية", coef: 1 }
+	];
+	let anneLevel = [
+		{ subject: "دورة الاولى", coef: 15 },
+		{ subject: "دورة الثانية", coef: 15 },
+		{ subject: "الجهوي", coef: 40 },
+		{ subject: "المحلي", coef: 30 }
+	];
+	let sub = [
+		{ subject: "الفرنسية", coef: 3 },
+		{ subject: "العربية", coef: 3 },
+		{ subject: "الرياضيات", coef: 3 },
+		{ subject: "العلوم", coef: 1 },
+		{ subject: "الفيزياء", coef: 1 },
+		{ subject: "إسلاميات", coef: 1 },
+		{ subject: "إجتماعيات", coef: 1 }
+	];
+	return (
+		<>
+			<h2 style={{ fontWeight: "600", marginTop: "20px" }}>
+				الثالثة اعدادي
+			</h2>
+			<Structure ClassName="structure">
+				{subjecto.map(ob => {
+					return <Trs ceof={ob.coef} matier={ob.subject} />;
+				})}
+				<TrM ceof="1" matier="المواظبة" />
+			</Structure>
+			<Sndala999 H4={"المعدل الجهوي"} anneLevel={sub} title="المادة" />
+			<Sndala999 H4={"المعدل المحلي"} anneLevel={sub} title="المادة" />
+			<Sndala999 anneLevel={anneLevel} title="المرحلة" />
+		</>
+	);
+}
+
 function TCSF() {
 	let anneLevel = [
 		{ subject: "الاولى", coef: 1 },
@@ -444,4 +490,4 @@ function IsSI({ children }) {
 	}
 }
 
-export { TCSF, TCAL, ABAC_LSH, ABAC_SCEXP, BBAC_SH, BBAC_PC, IsSI };
+export { TCSF, TCAL, ABAC_LSH, ABAC_SCEXP, BBAC_SH, BBAC_PC, TAS3A, IsSI };

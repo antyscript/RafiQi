@@ -16,6 +16,7 @@ import {
 	ABAC_SCEXP,
 	BBAC_SH,
 	BBAC_PC,
+	TAS3A,
 	IsSI
 } from "./Components/Level.jsx";
 import Signup from "./Components/signup.jsx";
@@ -57,6 +58,7 @@ function App() {
 					<Route path="1bac-lsh" element={<ABAC_LSH />} />
 					<Route path="2bac-pc" element={<BBAC_PC />} />
 					<Route path="2bac-sh" element={<BBAC_SH />} />
+					<Route path="tas3a" element={<TAS3A />} />
 				</Route>
 				<Route
 					path="/posts"
