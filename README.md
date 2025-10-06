@@ -10,7 +10,7 @@
 - **Frontend:** `HTML`, `CSS`, `JavaScript`, `React`, `React Router DOM`, `MUI`, `Vite`  
 - **Backend:** `Node.js`, `Express`, `REST APIs`, `JWT`, `Cookies`, `.env`, `Moment.js`  
 - **Database:** `MongoDB`  
-
+- **Generally:** `MERN stack Project (React.Js)`
 > ⚠️ مكتبة Cookies موجودة ضمن المشروع لكنها غير مستخدمة بعد.
 
 ---
